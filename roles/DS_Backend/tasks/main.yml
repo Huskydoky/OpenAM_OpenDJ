@@ -17,12 +17,11 @@
 
 - name: copy opendj props file
   template: 
-  src: opendj.properties 
-  dest: /tmp/opendj.properties 
+    src: opendj.properties 
+    dest: /tmp/opendj.properties 
   
 - name: setup opendj
-  command: 
-    creates: {{install_root}}/opendj/config {{install_root}}/opendj/setup --cli --propertiesFilePath /tmp/opendj.properties --acceptLicense --generateSelfSignedCertificate  --no-prompt 
+  command: "{{install_root}}/opendj/config {{install_root}}/opendj/setup --cli --propertiesFilePath /tmp/opendj.properties --acceptLicense --generateSelfSignedCertificate --no-prompt "
 
 - name: Create rc script
   command: "{{install_root}}/opendj/bin/create-rc-script -f /etc/init.d/{{opendj_service_name}} -u root"
@@ -42,6 +41,43 @@
   ignore_errors: yes
   
 - name: Create base suffix for openam config store. This makes it easier if we want to use OpenAM later
-  command: "{{install_root}}/opendj/bin/dsconfig create-backend --backend-name cfgStore --set base-dn:{{opendj_basedn}}
-    --set enabled:true --type je --port {{opendj_admin_port}} --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}}
-    --trustAll --noPropertiesFile --no-prompt"
+  command: "{{install_root}}/opendj/bin/dsconfig create-backend --backend-name cfgStore --set base-dn:{{opendj_basedn}} --set enabled:true --type je --port {{opendj_admin_port}} --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}} --trustAll --noPropertiesFile --no-prompt"
+
+- name: Copie du fichier ldif
+  template: 
+    src: admins.ldif
+    dest: /tmp/admins.ldif
+
+- name: Création du compte admin openam
+  command: "{{install_root}}/opendj/bin/ldapmodify  --port {{opendj_ldap_port}} --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}} --trustAll /tmp/admins.ldif"
+  
+- name: Modification des aci pour le compte Admin openam
+  command: "{{install_root}}/opendj/bin/dsconfig set-access-control-handler-prop --add global-aci:'(target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write)(userdn = "ldap:///uid=openam,ou=admins,{{opendj_basedn}}");)' --port {{opendj_admin_port}} --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_admin_port}} --trustAll --no-prompt"
+
+- name: Copie des ldif 
+  copy: 
+    src: {{item}}
+    dest: /tmp/{{item}}
+  with_items:
+    - cts-add-schema.ldif
+    - opendj_config_schema.ldif
+    - opendj_user_schema.ldif
+
+- name: import des schémas:
+  command: "{{install_root}}/opendj/bin/ldapmodify  --port {{opendj_ldap_port}} --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}} --trustAll /tmp/{{item}}"
+  with_items:
+    - cts-add-schema.ldif
+    - opendj_config_schema.ldif
+    - opendj_user_schema.ldif
+ 
+- name: Création des index
+  command: "{{install_root}}/opendj/bin/dsconfig create-backend-index --port {{opendj_admin_port}} --hostname localhost --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}} --backend-name cfgStore --index-name sunxmlkeyvalue --set index-type:equality --set index-type:substring --trustAll --no-prompt"
+
+- name: Création des index
+  command: "{{install_root}}/opendj/bin/dsconfig create-backend-index --port {{opendj_admin_port}} --hostname localhost --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}} --backend-name cfgStore  --index-name iplanet-am-user-federation-info-key --set index-type:equality --trustAll --no-prompt"
+
+- name: Création des index
+  command: "{{install_root}}/opendj/bin/dsconfig create-backend-index --port {{opendj_admin_port}} --hostname localhost --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}} --backend-name cfgStore --index-name sun-fm-saml2-nameid-infokey --set index-type:equality --trustAll --no-prompt"
+  
+- name: reconstruction des index
+  command: "{{install_root}}/opendj/bin/rebuild-index --port {{opendj_admin_port}} --hostname localhost --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_rootUserDN}} --baseDN {{opendj_basedn}} --rebuildAll --start 0 --trustAll"
