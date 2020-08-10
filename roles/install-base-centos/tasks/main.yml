@@ -1,0 +1,44 @@
+---
+
+- name : Installation des packets nécéssaires.
+  package: name={{item}} state=latest
+  with_items:
+    - unzip
+    - git
+    - wget
+    - haproxy
+    - httpd
+    - gpg
+    - java-1.8.0-openjdk-headless.x86_64
+    - python-pip
+    - bzip2
+    - npm
+    - libselinux-python
+    
+- name: Mise en place du fqfn et du hostname dans /etc/hosts
+  lineinfile: dest="/etc/hosts" line="127.0.0.2 {{openam_fqdn}} {{openam_hostname}}" regexp="{{openam_fqdn}}"  state=present
+  
+- name: Création dossier logiciel
+  file: state=directory path=/root/aduneo/ owner=root mode 0755
+  
+- selinux: state=disabled
+
+
+# Désactivation du firewalld. A changer pour des règles de firewall.
+- service: name=firewalld state=stopped enabled=no
+  ignore_errors: yes
+  
+# Modification des descripteurs de fichiers et du swap 
+- name: config sysctl
+  shell: |
+    cp /etc/sysctl.d/99-sysctl.conf /etc/sysctl.d/99-sysctl.conf.old-$(date '+%Y%m%d')
+    sed -i '$a#Descripteur de Fichier\nfs.file-max = 589815\n#Swappiness\nvm.swappiness = 0' /etc/sysctl.d/99-sysctl.conf
+    sysctl -p
+      
+ # Configuration des limites des utilisateurs 
+- name: Config limits
+  shell: |
+    cp /etc/security/limits.conf /etc/security/limits.conf.old-$(date '+%Y%m%d')
+    sed -i "59a root            soft    nofile          65535\nroot            hard    nofile          131070\n" /etc/security/limits.conf
+
+ 
