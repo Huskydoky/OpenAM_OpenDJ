@@ -5,29 +5,43 @@
 #
   
 - name: create install root
-  file: path={{install_root}} state=directory
+  file: 
+    path: {{install_root}} 
+    state: directory
  
 - name: unpack opendj
-  unarchive: copy=no src="{{ staging_dir }}/opendj.zip" dest="{{install_root}}"
+  unarchive: 
+    copy: no 
+    src: "{{ staging_dir }}/opendj.zip" 
+    dest: "{{install_root}}"
 
 - name: copy opendj props file
-  template: src=opendj.properties dest=/tmp/opendj.properties 
+  template: 
+  src: opendj.properties 
+  dest: /tmp/opendj.properties 
   
 - name: setup opendj
-  command: creates={{install_root}}/opendj/config {{install_root}}/opendj/setup --cli --propertiesFilePath /tmp/opendj.properties --acceptLicense --generateSelfSignedCertificate  --no-prompt 
+  command: 
+    creates: {{install_root}}/opendj/config {{install_root}}/opendj/setup --cli --propertiesFilePath /tmp/opendj.properties --acceptLicense --generateSelfSignedCertificate  --no-prompt 
 
 - name: Create rc script
   command: "{{install_root}}/opendj/bin/create-rc-script -f /etc/init.d/{{opendj_service_name}} -u root"
   
 - name: Change the ownership on the files so the fr user can execute ldap commands
-  file: path={{install_root}}/opendj state=directory owner={{fr_user}} recurse=yes
+  file: 
+    path: {{install_root}}/opendj 
+    state: directory 
+    owner: {{fr_user}} 
+    recurse: yes
 
 # Ignore errors as the installer may start DJ
 - name: Enable opendj - ignore errors as it may already be running
-  service: name={{opendj_service_name}} enabled=yes
+  service: 
+    name:{{opendj_service_name}} 
+    enabled: yes
   ignore_errors: yes
   
 - name: Create base suffix for openam config store. This makes it easier if we want to use OpenAM later
-  command: "{{install_root}}/opendj/bin/dsconfig set-backend-prop --backend-name userRoot --add base-dn:dc=openam,dc=forgerock,dc=org
-    --hostname localhost --port 4444 --bindDN cn=\"Directory\ Manager\" --bindPassword {{opendj_password}}
+  command: "{{install_root}}/opendj/bin/dsconfig create-backend --backend-name cfgStore --set base-dn:{{opendj_basedn}}
+    --set enabled:true --type je --port {{opendj_admin_port}} --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}}
     --trustAll --noPropertiesFile --no-prompt"
