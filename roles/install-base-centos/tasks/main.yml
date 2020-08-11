@@ -1,7 +1,7 @@
 ---
 
 - name : Installation des packets nécéssaires.
-  package: 
+  yum: 
     name: {{item}} 
     state: latest
   with_items:
@@ -15,13 +15,14 @@
     - python-pip
     - bzip2
     - npm
-    - libselinux-python
+    - libselinux-python3.x86_64
     
 - name: Mise en place du fqfn et du hostname dans /etc/hosts
   lineinfile: 
     path: "/etc/hosts" 
     line: "127.0.0.2 {{openam_fqdn}} {{openam_hostname}}"
-    regexp: "{{openam_fqdn}}"  state=present
+    regexp: "{{openam_fqdn}}"  
+    state: present
   
 - name: Création dossier logiciel
   file: 
