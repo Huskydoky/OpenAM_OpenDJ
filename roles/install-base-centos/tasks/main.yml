@@ -29,9 +29,10 @@
     state: directory 
     path: /root/aduneo/ 
     owner: root 
-    mode: 0755
+    mode: 0750
   
-- selinux: 
+- name: Désactivation du selinux
+  selinux: 
     state: disabled
 
 

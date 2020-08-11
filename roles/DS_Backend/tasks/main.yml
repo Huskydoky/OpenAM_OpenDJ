@@ -12,8 +12,8 @@
 - name: unpack opendj
   unarchive: 
     copy: no 
-    src: "{{ staging_dir }}/opendj.zip" 
-    dest: "{{install_root}}"
+    src: "{{ staging_dir }}/{{opendj_zip}}" 
+    dest: "{{install_root}}/{{instance_name}}"
 
 - name: copy opendj props file
   template: 
