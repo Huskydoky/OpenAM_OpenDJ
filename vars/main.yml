@@ -1,0 +1,64 @@
+######## Variable préparaton ########
+
+
+######## Variable Installation Tomcat #########
+#tomcat_instance: tomcat1
+tomcat_parent: /opt/tomcat
+#tomcat_instance_home: "{{ tomcat_parent }}/{{ tomcat_instance }}"
+tomcat_conf: "{{ tomcat_parent }}/conf"
+
+tomcat_base_port: 8000
+tomcat_admin_port: "{{ tomcat_base_port + 5}}"
+tomcat_http_port: "{{ tomcat_base_port + 80}}"
+tomcat_https_port: "{{ tomcat_base_port + 443}}"
+tomcat_ajp_port: "{{ tomcat_base_port + 9}}"
+tomcat_user: tomcat
+admin_username: admin
+admin_password: admin
+
+
+######## Variable AM ########
+
+
+
+
+######## Variable Directory Service BACKEND ########
+fr_user: root
+
+DS_CONF_install_root: /opt
+DS_CONF_instance_name: backend1
+DS_CONF_service_name: "{{ DS_CONF_instance_name }}"
+DS_CONF_download_dir: /var/tmp
+DS_CONF_opendj_zip: "DS-6.0.0.zip"
+
+DS_CONF_PORT_LDAP: 389
+DS_CONF_PORT_LDAPS: 636
+DS_CONF_PORT_ADMIN: 4444
+DS_CONF_PORT_JMX: 1689
+# BaseDN
+DS_CONF_basedn: "dc=aduneo,dc=test"
+DS_CONF_rootUserDN: "cn=Directory Manager"
+DS_CONF_password: password
+
+
+######## Variable Directory Service user ########
+fr_user: root
+
+DS_USER_install_root: /opt
+DS_USER_instance_name: opendj1
+DS_USER_service_name: "{{ DS_USER_instance_name }}"
+DS_USER_download_dir: /var/tmp
+DS_USER_opendj_zip: "DS-6.0.0.zip"
+
+DS_USER_PORT_LDAP: 389
+DS_USER_PORT_LDAPS: 636
+DS_USER_PORT_ADMIN: 4444
+DS_USER_PORT_JMX: 1689
+# BaseDN
+DS_USER_basedn: "dc=aduneo,dc=test"
+DS_USER_rootUserDN: "cn=Directory Manager"
+DS_USER_password: password
+
+
+
+######## Variable installation Tools #########
