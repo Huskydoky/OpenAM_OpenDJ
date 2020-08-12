@@ -2,7 +2,7 @@
 
 - name : Installation des packets nécéssaires.
   yum: 
-    name: {{item}} 
+    name: {{ item }} 
     state: latest
   with_items:
     - unzip
@@ -20,7 +20,7 @@
 - name: Mise en place du fqfn et du hostname dans /etc/hosts
   lineinfile: 
     path: "/etc/hosts" 
-    line: "127.0.0.2 {{openam_fqdn}} {{openam_hostname}}"
+    line: "127.0.0.2 {{ openam_fqdn }} {{ openam_hostname }}"
     regexp: "{{openam_fqdn}}"  
     state: present
   

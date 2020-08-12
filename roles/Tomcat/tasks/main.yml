@@ -54,7 +54,7 @@
 - name: Configure Tomcat users
   template: 
     src: tomcat-users.xml 
-    dest: {{tomcat_conf}}
+    dest: {{ tomcat_conf }}
     
 
 - name: Change ownership of Tomcat installation
