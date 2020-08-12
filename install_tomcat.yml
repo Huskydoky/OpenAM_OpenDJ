@@ -5,4 +5,4 @@
 
 - hosts: alameda
   roles:
-   - { role: tomcat }
+   - { role: Tomcat }
