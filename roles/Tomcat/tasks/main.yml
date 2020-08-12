@@ -26,10 +26,10 @@
 
 - name: création de l'utilisateur Tomcat
   user:
-    name: {{ tomcat_user }} 
+    name: "{{ tomcat_user }}"
     shell: /bin/false
     home: /opt/tomcat
-    group: {{ tomcat_user }} 
+    group: "{{ tomcat_user }}"
  
 
 - name: Copie du service Tomcat
@@ -54,13 +54,13 @@
 - name: Configure Tomcat users
   template: 
     src: tomcat-users.xml 
-    dest: {{ tomcat_conf }}
+    dest: "{{ tomcat_conf }}"
     
 
 - name: Change ownership of Tomcat installation
   file: 
-    path: {{ tomcat_parent }} 
-    owner: {{ tomcat_user }} 
+    path: "{{ tomcat_parent }}" 
+    owner: "{{ tomcat_user }}" 
     state: directory 
     recurse: yes
 
