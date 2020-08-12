@@ -1,9 +1,9 @@
 #Default variables
 
-tomcat_instance: tomcat1
-tomcat_parent: /var/lib/tomcats
-tomcat_instance_home: "{{ tomcat_parent }}/{{ tomcat_instance }}"
-tomcat_conf: "{{ tomcat_instance_home }}/conf"
+#tomcat_instance: tomcat1
+tomcat_parent: /opt/tomcat
+#tomcat_instance_home: "{{ tomcat_parent }}/{{ tomcat_instance }}"
+tomcat_conf: "{{ tomcat_parent }}/conf"
 
 tomcat_base_port: 8000
 tomcat_admin_port: "{{ tomcat_base_port + 5}}"

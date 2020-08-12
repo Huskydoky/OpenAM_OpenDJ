@@ -1,50 +1,71 @@
-- name: Install tomcat
-  yum:
-    name: tomcat
-    state: latest
 
-- name: create instance dir and sub dir
-  command: mkdir -p "{{ tomcat_parent }}/{{ tomcat_instance }}/{{item}}"
-  with_items:
-    - conf
-    - webapps
-    - logs
-    - temp
-    - work
+- name: Récupération de Tomcat
+  get_url: 
+    url: http://mirror.ibcp.fr/pub/apache/tomcat/tomcat-9/v9.0.36/bin/apache-tomcat-9.0.36.tar.gz 
+    dest: /root/aduneo/apache-tomcat-9.0.36.tar.gz
+   
+#- name: create instance dir and sub dir
+#  command: mkdir -p "{{ tomcat_parent }}/{{ tomcat_instance }}/{{item}}"
+#  with_items:
+#    - conf
+#    - webapps
+#    - logs
+#    - temp
+#   - work 
 
-- name: Set JAVA_OPTS in /etc/tomcat/tomcat.conf
-  lineinfile: 
-    dest: /etc/tomcat/tomcat.conf  
-    regexp: '^JAVA_OPTS' 
-    line: 'JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"'
+- name: Extraction de Tomcat
+  unarchive: 
+    src: /root/aduneo/apache-tomcat-9.0.36.tar.gz
+    dest: /opt
 
-- name: Copy the tomcat defaults to {{tomcat_conf}}
-  command: cp "/etc/tomcat/{{item}}" "{{tomcat_conf}}"
-  with_items:
-    - web.xml
-    - context.xml
-    - catalina.policy
-    - catalina.properties
+- name: Céation d'un lien symbolique
+  file:
+    src: /opt/apache-tomcat-9.0.36/
+    dest: /opt/tomcat
+    state: link
 
-- name: Configure Tomcat server.xml to set ports, etc.
+- name: création de l'utilisateur Tomcat
+  user:
+    name: {{ tomcat_user }} 
+    shell: /bin/false
+    home: /opt/tomcat
+    group: {{ tomcat_user }} 
+ 
+
+- name: Copie du service Tomcat
   template: 
-    src: server.xml 
-    dest: {{tomcat_conf}}
+    src: tomcat.service
+    dest: /etc/systemd/system/tomcat.service
+
+
+#- name: Copy the tomcat defaults to {{tomcat_conf}}
+# command: cp "/etc/tomcat/{{item}}" "{{tomcat_conf}}"
+#  with_items:
+#    - web.xml
+#    - context.xml
+#    - catalina.policy
+#    - catalina.properties
+
+#- name: Configure Tomcat server.xml to set ports, etc.
+#  template: 
+#    src: server.xml 
+#    dest: {{tomcat_conf}}
 
 - name: Configure Tomcat users
   template: 
     src: tomcat-users.xml 
     dest: {{tomcat_conf}}
+    
 
 - name: Change ownership of Tomcat installation
   file: 
-    path: {{ tomcat_instance_home }} 
+    path: {{ tomcat_parent }} 
     owner: {{ tomcat_user }} 
     state: directory 
     recurse: yes
 
-- name: Enable  and start Tomcat
+- name: Enable and start Tomcat
   service: 
-    name: "tomcat@{{ tomcat_instance }}.service" 
+    name: "tomcat.service" 
     state: restarted 
     enabled: yes
