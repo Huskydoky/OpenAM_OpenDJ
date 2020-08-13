@@ -6,7 +6,7 @@
   
 - name: create install root
   file: 
-    path: "{{ install_root }}"
+    path: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}"
     state: directory
  
 - name: unpack opendj
