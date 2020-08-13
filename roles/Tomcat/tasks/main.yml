@@ -37,6 +37,7 @@
   template: 
     src: tomcat.service
     dest: /etc/systemd/system/tomcat.service
+    mode: 766
 
 
 #- name: Copy the tomcat defaults to {{tomcat_conf}}
