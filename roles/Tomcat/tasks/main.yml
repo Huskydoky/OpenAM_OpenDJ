@@ -31,7 +31,6 @@
     name: "{{ tomcat_user }}"
     shell: /bin/false
     home: /opt/tomcat
-    group: "{{ tomcat_user }}"
  
 
 - name: Copie du service Tomcat
