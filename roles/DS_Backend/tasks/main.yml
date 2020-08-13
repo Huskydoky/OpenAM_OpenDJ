@@ -52,7 +52,7 @@
   command: "{{ DS_CONF_install_root }}/opendj/bin/ldapmodify  --port {{ opendj_ldap_port }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll /tmp/admins.ldif"
   
 - name: Modification des aci pour le compte Admin openam
-  command: "{{ DS_CONF_install_root }}/opendj/bin/dsconfig set-access-control-handler-prop --add global-aci:'(target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write)(userdn = "ldap:///uid=openam,ou=admins,{{DS_CONF_basedn}}");)' --port {{DS_CONF_PORT_ADMIN}} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_PORT_ADMIN }} --trustAll --no-prompt"
+  command: "{{ DS_CONF_install_root }}/opendj/bin/dsconfig set-access-control-handler-prop --add global-aci:'(target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write)(userdn = "ldap:///uid=openam,ou=admins,{{DS_CONF_basedn}}");)' --port {{ DS_CONF_PORT_ADMIN }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_PORT_ADMIN }} --trustAll --no-prompt"
 
 - name: Copie des ldif 
   copy: 
@@ -64,7 +64,7 @@
     - opendj_user_schema.ldif
 
 - name: import des schémas:
-  command: "{{ DS_CONF_install_root }}/opendj/bin/ldapmodify  --port {{opendj_ldap_port}} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll /tmp/{{ item }}"
+  command: "{{ DS_CONF_install_root }}/opendj/bin/ldapmodify  --port {{ DS_CONF_PORT_LDAP }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll /tmp/{{ item }}"
   with_items:
     - cts-add-schema.ldif
     - opendj_config_schema.ldif
