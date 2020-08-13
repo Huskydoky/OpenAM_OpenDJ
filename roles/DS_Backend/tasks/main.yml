@@ -63,7 +63,7 @@
     - opendj_config_schema.ldif
     - opendj_user_schema.ldif
 
-- name: import des schémas:
+- name: import des schémas
   command: "{{ DS_CONF_install_root }}/opendj/bin/ldapmodify  --port {{ DS_CONF_PORT_LDAP }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll /tmp/{{ item }}"
   with_items:
     - cts-add-schema.ldif
