@@ -1,5 +1,6 @@
 ######## Variable préparaton ########
-
+openam_hostname: ansible_host
+openam_fqdn: {{ ansible_host }}.aduneo.test
 
 ######## Variable Installation Tomcat #########
 #tomcat_instance: tomcat1

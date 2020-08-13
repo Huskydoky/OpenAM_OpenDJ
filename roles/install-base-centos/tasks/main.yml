@@ -21,7 +21,7 @@
   lineinfile: 
     path: "/etc/hosts" 
     line: "127.0.0.2 {{ openam_fqdn }} {{ openam_hostname }}"
-    regexp: "{{openam_fqdn}}"  
+    regexp: "{{ openam_fqdn }}"  
     state: present
   
 - name: Création dossier logiciel
