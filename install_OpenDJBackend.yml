@@ -1,0 +1,6 @@
+---
+- hosts: tampa
+  roles:
+   - { role: DS_Backend }
+  vars_files:
+   - vars/main.yml
