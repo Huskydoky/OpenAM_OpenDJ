@@ -12,7 +12,7 @@
 - name: unpack opendj
   unarchive: 
     copy: no 
-    src: "{{ staging_dir }}/{{ opendj_zip }}" 
+    src: "/root/aduneo/{{ opendj_zip }}" 
     dest: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}"
 
 - name: copy opendj props file
