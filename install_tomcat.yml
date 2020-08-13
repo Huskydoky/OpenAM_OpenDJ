@@ -1,11 +1,11 @@
 ---
-- hosts: alameda
+- hosts: all
   roles:
    - { role: install-base-centos }
   vars_files:
    - vars/main.yml
   
-- hosts: alameda
+- hosts: all
   roles:
    - { role: Tomcat }
   vars_files:
