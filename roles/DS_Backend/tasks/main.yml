@@ -28,15 +28,15 @@
   
 - name: Change the ownership on the files so the fr user can execute ldap commands
   file: 
-    path: {{ DS_CONF_install_root }}/opendj 
+    path: "{{ DS_CONF_install_root }}/opendj"
     state: directory 
-    owner: {{fr_user}} 
+    owner: "{{ fr_user }}"
     recurse: yes
 
 # Ignore errors as the installer may start DJ
 - name: Enable opendj - ignore errors as it may already be running
   service: 
-    name:{{ DS_CONF_service_name }} 
+    name: "{{ DS_CONF_service_name }}"
     enabled: yes
   ignore_errors: yes
   
@@ -56,8 +56,8 @@
 
 - name: Copie des ldif 
   copy: 
-    src: {{ item }}
-    dest: /tmp/{{ item }}
+    src: "{{ item }}"
+    dest: "/tmp/{{ item }}"
   with_items:
     - cts-add-schema.ldif
     - opendj_config_schema.ldif
