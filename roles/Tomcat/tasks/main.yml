@@ -18,6 +18,7 @@
   unarchive: 
     src: /root/aduneo/apache-tomcat-9.0.36.tar.gz
     dest: /opt/
+    remote_src: yes
 
 - name: Céation d'un lien symbolique
   file:
