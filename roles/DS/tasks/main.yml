@@ -4,57 +4,46 @@
 # TODO: Import sample ldif, schema
 #
   
-- name: create install root
-  file: 
-    path: {{install_root}} 
-    state: directory
- 
 - name: unpack opendj
   unarchive: 
-    copy: no 
-    src: "{{ staging_dir }}/{{opendj_zip}}" 
-    dest: "{{install_root}}/{{opendj_service_name}}"
+    src: "/root/aduneo/{{ opendj_zip }}" 
+    dest: "{{ DS_USER_install_root }}"
 
-- name: copy opendj props file
-  template: 
-    src: opendj.properties 
-    dest: /tmp/opendj.properties 
+- name: Renommer OpenDJ
+  command: "mv {{ DS_USER_install_root }}/opendj {{ DS_USER_install_root }}/{{ DS_USER_instance_name }}"
+
+#- name: copy opendj props file
+#  template: 
+#    src: opendj.properties 
+#    dest: /tmp/opendj.properties 
   
 - name: setup opendj
-  command: "{{install_root}}/opendj/config {{install_root}}/opendj/setup --cli --propertiesFilePath /tmp/opendj.properties --acceptLicense --generateSelfSignedCertificate --no-prompt "
+  command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/setup directory-server --instancePath {{ DS_USER_install_root }}/{{ DS_USER_instance_name }} --rootUserDn \"{{ DS_USER_rootUserDN }}\" --rootUserPassword {{ DS_USER_password }} --hostname {{ ansible_host }}.aduneo.test --baseDN {{ DS_USER_basedn }} --adminConnectorPort {{ DS_USER_PORT_ADMIN }} --ldapPort {{ DS_USER_PORT_LDAP }} --ldapsPort {{ DS_USER_PORT_LDAPS }} --httpPort {{ DS_USER_PORT_HTTP }} --httpsPort {{ DS_USER_PORT_HTTPS }} --enableStartTLS --acceptLicense"
 
 - name: Create rc script
-  command: "{{install_root}}/opendj/bin/create-rc-script -f /etc/init.d/{{opendj_service_name}} -u root"
+  command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/create-rc-script -f /etc/init.d/{{ DS_USER_service_name }} -u root"
   
 - name: Change the ownership on the files so the fr user can execute ldap commands
   file: 
-    path: {{install_root}}/{{opendj_service_name}} 
+    path: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}"
     state: directory 
-    owner: {{fr_user}} 
+    owner: "{{ fr_user }}"
     recurse: yes
 
 # Ignore errors as the installer may start DJ
 - name: Enable opendj - ignore errors as it may already be running
   service: 
-    name:{{opendj_service_name}} 
+    name: "{{ DS_USER_service_name }}"
     enabled: yes
   ignore_errors: yes
-
+  
 - name: Copie du fichier ldif
   template: 
     src: admins.ldif
     dest: /tmp/admins.ldif
-
-- name: Création du compte admin openam
-  command: "{{install_root}}/opendj/bin/ldapmodify  --port {{opendj_ldap_port}} --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}} --trustAll /tmp/admins.ldif"
-  
-- name: Modification des aci pour le compte Admin openam
-  command: "{{install_root}}/opendj/bin/dsconfig set-access-control-handler-prop --no-prompt --trustAll --add 'global-aci:(target="ldap:///cn=schema")(targetattr="attributeTypes||objectClasses")(version 3.0; acl "Modify schema"; allow (write) userdn="ldap:///uid=openam,ou=admins,{{opendj_basedn}}";)'
-
-- name: Copie du fichier ldif
-  template: 
-    src: droit_admin.ldif
-    dest: /tmp/droit_admin.ldif
  
 - name: Création du compte admin openam
-  command: "{{install_root}}/opendj/bin/ldapmodify  --port {{opendj_ldap_port}} --bindDN {{opendj_rootUserDN}} --bindPassword {{opendj_password}} --trustAll /tmp/admins.ldif"
+  command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/ldapmodify  --port {{ DS_USER_PORT_LDAP }} --bindDN {{ DS_USER_rootUserDN }} --bindPassword {{ DS_USER_password }} --trustAll /tmp/admins.ldif"
+  
+- name: Modification des aci pour le compte Admin openam
+  command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/dsUSERig set-access-control-handler-prop --port {{ DS_CONF_PORT_ADMIN }} --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --hostname {{ ansible_host }} --no-prompt --trustAll --add 'global-aci:(target="ldap:///cn=schema")(targetattr="attributeTypes||objectClasses")(version 3.0; acl "Modify schema"; allow (write) userdn="ldap:///uid=openam,ou=admins,{{ DS_USER_basedn }}";)'
