@@ -14,8 +14,8 @@
     src: "/root/aduneo/{{ opendj_zip }}" 
     dest: "{{ DS_CONF_install_root }}"
 
-- name: Renommer OpenDJ
-  command: "mv {{ DS_CONF_install_root }}/opendj {{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}"
+#- name: Renommer OpenDJ
+#  command: "mv {{ DS_CONF_install_root }}/opendj {{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}"
 
 - name: copy opendj props file
   template: 
