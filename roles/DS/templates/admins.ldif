@@ -1,9 +1,26 @@
+dn: {{ DS_USER_basedn }}
+objectclass: top
+objectclass: domain
+dc: aduneo
+aci: (targetattr="* || aci")(version 3.0;acl "Allow identity modification";
+ allow (write)(userdn = "ldap:///uid={{ openam_admin }},ou=admins,{{ DS_USER_basedn }}");)
+aci: (targetattr!="userPassword||authPassword")(version 3.0;
+ acl "Allow identity search"; allow (search, read)
+ (userdn = "ldap:///uid={{ openam_admin }},ou=admins,{{ DS_USER_basedn }}");)
+aci: (targetcontrol="2.16.840.1.113730.3.4.3")
+ (version 3.0;acl "Allow persistent search"; allow (search, read)
+ (userdn = "ldap:///uid={{ openam_admin }},ou=admins,{{ DS_USER_basedn }}");)
+aci: (version 3.0;acl "Add or delete identities"; allow (add, delete)
+ (userdn = "ldap:///uid={{ openam_admin }},ou=admins,{{ DS_USER_basedn }}");)
+aci: (targetcontrol="1.3.6.1.4.1.42.2.27.8.5.1")(version 3.0;acl "Allow behera draft control"; allow (read)
+ (userdn = "ldap:///uid={{ openam_admin }},ou=admins,{{ DS_USER_basedn }}");)
+
 dn: ou=admins,{{ DS_USER_basedn }}
 objectClass: top
 objectClass: organizationalunit
 ou: {{ openam_admin_password }}
 
-dn: uid=openam,ou=admins,{{ DS_USER_basedn }}
+dn: uid={{ openam_admin }},ou=admins,{{ DS_USER_basedn }}
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
