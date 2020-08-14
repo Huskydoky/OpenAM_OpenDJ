@@ -23,7 +23,7 @@
     dest: /tmp/opendj.properties 
   
 - name: setup opendj
-  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }/setup --cli --propertiesFilePath /tmp/opendj.properties --acceptLicense --generateSelfSignedCertificate --no-prompt "
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/setup --cli --propertiesFilePath /tmp/opendj.properties --acceptLicense --generateSelfSignedCertificate --no-prompt"
 
 - name: Create rc script
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/create-rc-script -f /etc/init.d/{{ DS_CONF_service_name }} -u root"
