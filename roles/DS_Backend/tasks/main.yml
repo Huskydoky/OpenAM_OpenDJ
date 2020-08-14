@@ -49,7 +49,7 @@
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/ldapmodify  --port {{ DS_CONF_PORT_LDAP }} --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --trustAll /tmp/admins.ldif"
   
 - name: Modification des aci pour le compte Admin openam
-  shell: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig set-access-control-handler-prop --add global-aci:'(target = \"ldap:///cn=schema\")(targetattr = \"attributeTypes || objectClasses\")(version 3.0; acl \"Modify schema\"; allow (write)(userdn = \"ldap:///uid=openam,ou=admins,{{ DS_CONF_basedn }}\");)' --port {{ DS_CONF_PORT_ADMIN }} --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_PORT_ADMIN }} --hostname {{ ansible_host }} --trustAll --no-prompt"
+  shell: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig set-access-control-handler-prop --add global-aci:'(target = \"ldap:///cn=schema\")(targetattr = \"attributeTypes || objectClasses\")(version 3.0; acl \"Modify schema\"; allow (write)(userdn = \"ldap:///uid=openam,ou=admins,{{ DS_CONF_basedn }}\");)' --port {{ DS_CONF_PORT_ADMIN }} --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --hostname {{ ansible_host }} --trustAll --no-prompt"
   ignore_errors: true
   
 - name: Copie des ldif 
@@ -78,4 +78,4 @@
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig create-backend-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --backend-name cfgStore --index-name sun-fm-saml2-nameid-infokey --set index-type:equality --trustAll --no-prompt"
   
 - name: reconstruction des index
-  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/rebuild-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_rootUserDN }} --baseDN {{ DS_CONF_basedn }} --rebuildAll --start 0 --trustAll"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/rebuild-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --baseDN {{ DS_CONF_basedn }} --rebuildAll --start 0 --trustAll"
