@@ -1,0 +1,7 @@
+---
+- hosts: opendfuser
+  roles:
+   - { role: DS }
+  vars_files:
+   - vars/main.yml
+   
