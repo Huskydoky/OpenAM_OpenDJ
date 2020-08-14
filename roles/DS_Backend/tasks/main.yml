@@ -20,14 +20,14 @@
     dest: /tmp/opendj.properties 
   
 - name: setup opendj
-  command: "{{ DS_CONF_install_root }}/opendj/config {{ DS_CONF_install_root }}/opendj/setup --cli --propertiesFilePath /tmp/opendj.properties --acceptLicense --generateSelfSignedCertificate --no-prompt "
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/config {{ DS_CONF_install_root }}/opendj/setup --cli --propertiesFilePath /tmp/opendj.properties --acceptLicense --generateSelfSignedCertificate --no-prompt "
 
 - name: Create rc script
-  command: "{{ DS_CONF_install_root }}/opendj/bin/create-rc-script -f /etc/init.d/{{ DS_CONF_service_name }} -u root"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/create-rc-script -f /etc/init.d/{{ DS_CONF_service_name }} -u root"
   
 - name: Change the ownership on the files so the fr user can execute ldap commands
   file: 
-    path: "{{ DS_CONF_install_root }}/opendj"
+    path: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}"
     state: directory 
     owner: "{{ fr_user }}"
     recurse: yes
@@ -40,7 +40,7 @@
   ignore_errors: yes
   
 - name: Create base suffix for openam config store. This makes it easier if we want to use OpenAM later
-  command: "{{ DS_CONF_install_root }}/opendj/bin/dsconfig create-backend --backend-name cfgStore --set base-dn:{{ DS_CONF_basedn }} --set enabled:true --type je --port {{ DS_CONF_PORT_ADMIN }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll --noPropertiesFile --no-prompt"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig create-backend --backend-name cfgStore --set base-dn:{{ DS_CONF_basedn }} --set enabled:true --type je --port {{ DS_CONF_PORT_ADMIN }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll --noPropertiesFile --no-prompt"
 
 - name: Copie du fichier ldif
   template: 
@@ -48,10 +48,10 @@
     dest: /tmp/admins.ldif
 
 - name: Création du compte admin openam
-  command: "{{ DS_CONF_install_root }}/opendj/bin/ldapmodify  --port {{ opendj_ldap_port }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll /tmp/admins.ldif"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/ldapmodify  --port {{ opendj_ldap_port }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll /tmp/admins.ldif"
   
 - name: Modification des aci pour le compte Admin openam
-  command: "{{ DS_CONF_install_root }}/opendj/bin/dsconfig set-access-control-handler-prop --add global-aci:'(target = \"ldap:///cn=schema\")(targetattr = \"attributeTypes || objectClasses\")(version 3.0; acl \"Modify schema\"; allow (write)(userdn = \"ldap:///uid=openam,ou=admins,{{ DS_CONF_basedn }}\");)' --port {{ DS_CONF_PORT_ADMIN }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_PORT_ADMIN }} --trustAll --no-prompt"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig set-access-control-handler-prop --add global-aci:'(target = \"ldap:///cn=schema\")(targetattr = \"attributeTypes || objectClasses\")(version 3.0; acl \"Modify schema\"; allow (write)(userdn = \"ldap:///uid=openam,ou=admins,{{ DS_CONF_basedn }}\");)' --port {{ DS_CONF_PORT_ADMIN }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_PORT_ADMIN }} --trustAll --no-prompt"
 
 - name: Copie des ldif 
   copy: 
@@ -63,20 +63,20 @@
     - opendj_user_schema.ldif
 
 - name: import des schémas
-  command: "{{ DS_CONF_install_root }}/opendj/bin/ldapmodify  --port {{ DS_CONF_PORT_LDAP }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll /tmp/{{ item }}"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/ldapmodify  --port {{ DS_CONF_PORT_LDAP }} --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --trustAll /tmp/{{ item }}"
   with_items:
     - cts-add-schema.ldif
     - opendj_config_schema.ldif
     - opendj_user_schema.ldif
  
 - name: Création des index
-  command: "{{ DS_CONF_install_root }}/opendj/bin/dsconfig create-backend-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --backend-name cfgStore --index-name sunxmlkeyvalue --set index-type:equality --set index-type:substring --trustAll --no-prompt"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig create-backend-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --backend-name cfgStore --index-name sunxmlkeyvalue --set index-type:equality --set index-type:substring --trustAll --no-prompt"
 
 - name: Création des index
-  command: "{{ DS_CONF_install_root }}/opendj/bin/dsconfig create-backend-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN {{DS_CONF_rootUserDN}} --bindPassword {{ DS_CONF_password }} --backend-name cfgStore  --index-name iplanet-am-user-federation-info-key --set index-type:equality --trustAll --no-prompt"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig create-backend-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN {{DS_CONF_rootUserDN}} --bindPassword {{ DS_CONF_password }} --backend-name cfgStore  --index-name iplanet-am-user-federation-info-key --set index-type:equality --trustAll --no-prompt"
 
 - name: Création des index
-  command: "{{ DS_CONF_install_root }}/opendj/bin/dsconfig create-backend-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --backend-name cfgStore --index-name sun-fm-saml2-nameid-infokey --set index-type:equality --trustAll --no-prompt"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig create-backend-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_password }} --backend-name cfgStore --index-name sun-fm-saml2-nameid-infokey --set index-type:equality --trustAll --no-prompt"
   
 - name: reconstruction des index
-  command: "{{ DS_CONF_install_root }}/opendj/bin/rebuild-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_rootUserDN }} --baseDN {{ DS_CONF_basedn }} --rebuildAll --start 0 --trustAll"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/rebuild-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN {{ DS_CONF_rootUserDN }} --bindPassword {{ DS_CONF_rootUserDN }} --baseDN {{ DS_CONF_basedn }} --rebuildAll --start 0 --trustAll"
