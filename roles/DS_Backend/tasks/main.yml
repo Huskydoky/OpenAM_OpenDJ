@@ -46,7 +46,7 @@
     dest: /tmp/admins.ldif
 
 - name: Création du compte admin openam
-  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/ldapmodify  --port {{ opendj_ldap_port }} --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --trustAll /tmp/admins.ldif"
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/ldapmodify  --port {{ DS_CONF_PORT_LDAP }} --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --trustAll /tmp/admins.ldif"
   
 - name: Modification des aci pour le compte Admin openam
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig set-access-control-handler-prop --add global-aci:'(target = \"ldap:///cn=schema\")(targetattr = \"attributeTypes || objectClasses\")(version 3.0; acl \"Modify schema\"; allow (write)(userdn = \"ldap:///uid=openam,ou=admins,{{ DS_CONF_basedn }}\");)' --port {{ DS_CONF_PORT_ADMIN }} --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_PORT_ADMIN }} --trustAll --no-prompt"
