@@ -1,16 +1,16 @@
-dn: ou=admins,{{opendj_basedn}}
+dn: ou=admins,{{ DS_USER_basedn }}
 objectClass: top
 objectClass: organizationalunit
-ou: AM Administrator
+ou: {{ openam_admin_password }}
 
-dn: uid=openam,ou=admins,{{opendj_basedn}}
+dn: uid=openam,ou=admins,{{ DS_USER_basedn }}
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
-cn: {{openam_admin}}
-sn: {{openam_admin}}
-userPassword: {{openam_admin_password}}
+cn: {{ openam_admin }}
+sn: {{ openam_admin }}
+userPassword: {{ openam_admin_password }}
 ds-privilege-name: update-schema
 ds-privilege-name: subentry-write
 ds-privilege-name: password-reset
