@@ -1,5 +1,5 @@
 ######## Variable préparaton ########
-openam_hostname: {{ ansible_host }}
+openam_hostname: "{{ ansible_host }}"
 openam_fqdn: "{{ ansible_host }}.aduneo.test"
 opendj_zip: DS-6.0.0.zip
 
