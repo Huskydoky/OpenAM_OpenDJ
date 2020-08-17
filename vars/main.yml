@@ -1,5 +1,5 @@
 ######## Variable préparaton ########
-openam_hostname: ansible_host
+openam_hostname: {{ ansible_host }}
 openam_fqdn: "{{ ansible_host }}.aduneo.test"
 opendj_zip: DS-6.0.0.zip
 
@@ -20,7 +20,7 @@ admin_password: admin
 
 
 ######## Variable AM ########
-openam_admin: admin
+openam_admin: openam
 openam_admin_password: password
 
 
