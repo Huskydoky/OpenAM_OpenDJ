@@ -12,7 +12,7 @@ ACCEPT_LICENSES=true
 # Config store on openDS
 DATA_STORE=dirServer
 DIRECTORY_SSL=SIMPLE
-DIRECTORY_SERVER={{ groups['opendjBackend'].ansible_host }}.aduneo.test
+DIRECTORY_SERVER={{ hostvars[groups.opendjBackend[0]].DS_backend }}.aduneo.test
 DIRECTORY_PORT={{ DS_CONF_PORT_LDAP }}
 DIRECTORY_ADMIN_PORT={{ DS_CONF_PORT_ADMIN }}
 ROOT_SUFFIX={{ DS_CONF_basedn }}
@@ -22,7 +22,7 @@ DS_DIRMGRPASSWD={{ openam_admin_password }}
 # External OpenDJ based user data store
 USERSTORE_TYPE=LDAPv3ForOpenDS
 USERSTORE_SSL=SIMPLE
-USERSTORE_HOST={{ groups['opendfuser'].ansible_host }}.aduneo.test
+USERSTORE_HOST={{ hostvars[groups.opendfuser[0]].DS_USER }}.aduneo.test
 USERSTORE_PORT={{ DS_USER_PORT_LDAP }}
 USERSTORE_SUFFIX={{ DS_USER_basedn }}
 USERSTORE_MGRDN={{ openam_admin_root }}
