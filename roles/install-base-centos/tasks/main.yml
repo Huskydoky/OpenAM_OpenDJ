@@ -37,7 +37,7 @@
 
 
 # Désactivation du firewalld. A changer pour des règles de firewall.
-- name: Désactivation du firewall
+- name: Désactivation du firewall ( Règles a configurer par la suite )
   service: 
     name: firewalld 
     state: stopped 

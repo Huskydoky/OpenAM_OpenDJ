@@ -22,5 +22,11 @@
    - { role: DS }
   vars_files:
    - vars/main.yml
-   
+
+- hosts: AM
+  roles:
+   - { role: AM }
+  vars_files:
+   - vars/main.yml
+
    

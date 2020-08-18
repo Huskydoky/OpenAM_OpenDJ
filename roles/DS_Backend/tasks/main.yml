@@ -4,12 +4,12 @@
 # TODO: Import sample ldif, schema
 #
  
-- name: unpack opendj
+- name: Extraire OpenDS
   unarchive: 
     src: "/root/aduneo/{{ opendj_zip }}" 
     dest: "{{ DS_CONF_install_root }}"
 
-- name: Renommer OpenDJ
+- name: Renommer le dossier opendj vers "{{ DS_USER_instance_name }}"
   command: "mv {{ DS_CONF_install_root }}/opendj {{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}"
 
 #- name: copy opendj props file
@@ -17,13 +17,13 @@
 #    src: opendj.properties 
 #    dest: /tmp/opendj.properties 
   
-- name: setup opendj
+- name: Configuration d'une instance OpenDS
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/setup directory-server --instancePath {{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }} --rootUserDn \"{{ DS_CONF_rootUserDN }}\" --rootUserPassword {{ DS_CONF_password }} --hostname {{ ansible_host }}.aduneo.test --adminConnectorPort {{ DS_CONF_PORT_ADMIN }} --ldapPort {{ DS_CONF_PORT_LDAP }} --ldapsPort {{ DS_CONF_PORT_LDAPS }} --httpPort {{ DS_CONF_PORT_HTTP }} --httpsPort {{ DS_CONF_PORT_HTTPS }} --enableStartTLS --acceptLicense"
 
-- name: Create rc script
+- name: Création du rc script
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/create-rc-script -f /etc/init.d/{{ DS_CONF_service_name }} -u root"
   
-- name: Change the ownership on the files so the fr user can execute ldap commands
+- name: Donnée les droit à "{{ fr_user }}" afin de modifier le dossier "{{ DS_USER_instance_name }}"
   file: 
     path: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}"
     state: directory 
@@ -31,13 +31,13 @@
     recurse: yes
 
 # Ignore errors as the installer may start DJ
-- name: Enable opendj - ignore errors as it may already be running
+- name: Démarrer l'instance OpenDS, ignore l'erreur ci déjà allumé.
   service: 
     name: "{{ DS_CONF_service_name }}"
     enabled: yes
   ignore_errors: yes
   
-- name: Create base suffix for openam config store. This makes it easier if we want to use OpenAM later
+- name: Création du suffix pour la configuration AM.
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig create-backend --backend-name cfgStore --set base-dn:{{ DS_CONF_basedn }} --set enabled:true --type je --port {{ DS_CONF_PORT_ADMIN }} --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --trustAll --noPropertiesFile --no-prompt"
 
 - name: Copie du fichier ldif
@@ -61,14 +61,14 @@
     - opendj_config_schema.ldif
     - opendj_user_schema.ldif
 
-- name: import des schémas
+- name: import des schémas cts, opendj_config et opendj_user
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/ldapmodify  --port {{ DS_CONF_PORT_LDAP }} --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --trustAll /tmp/{{ item }}"
   with_items:
     - cts-add-schema.ldif
     - opendj_config_schema.ldif
     - opendj_user_schema.ldif
  
-- name: Création des index
+- name: Création des index 
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsconfig create-backend-index --port {{ DS_CONF_PORT_ADMIN }} --hostname localhost --bindDN \"{{ DS_CONF_rootUserDN }}\" --bindPassword {{ DS_CONF_password }} --backend-name cfgStore --index-name sunxmlkeyvalue --set index-type:equality --set index-type:substring --trustAll --no-prompt"
 
 - name: Création des index

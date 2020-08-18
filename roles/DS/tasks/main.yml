@@ -4,12 +4,12 @@
 # TODO: Import sample ldif, schema
 #
   
-- name: unpack opendj
+- name: Extraire OpenDS
   unarchive: 
     src: "/root/aduneo/{{ opendj_zip }}" 
     dest: "{{ DS_USER_install_root }}"
 
-- name: Renommer OpenDJ
+- name: Renommer le dossier opendj vers "{{ DS_USER_instance_name }}"
   command: "mv {{ DS_USER_install_root }}/opendj {{ DS_USER_install_root }}/{{ DS_USER_instance_name }}"
 
 #- name: copy opendj props file
@@ -17,13 +17,13 @@
 #    src: opendj.properties 
 #    dest: /tmp/opendj.properties 
   
-- name: setup opendj
+- name: Configuration d'un instance DS
   command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/setup directory-server --instancePath {{ DS_USER_install_root }}/{{ DS_USER_instance_name }} --rootUserDn \"{{ DS_USER_rootUserDN }}\" --rootUserPassword {{ DS_USER_password }} --hostname {{ ansible_host }}.aduneo.test --baseDN {{ DS_USER_basedn }} --adminConnectorPort {{ DS_USER_PORT_ADMIN }} --ldapPort {{ DS_USER_PORT_LDAP }} --ldapsPort {{ DS_USER_PORT_LDAPS }} --httpPort {{ DS_USER_PORT_HTTP }} --httpsPort {{ DS_USER_PORT_HTTPS }} --enableStartTLS --acceptLicense"
 
-- name: Create rc script
+- name: Création du rc script
   command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/create-rc-script -f /etc/init.d/{{ DS_USER_service_name }} -u root"
   
-- name: Change the ownership on the files so the fr user can execute ldap commands
+- name: Donnée les droit à "{{ fr_user }}" afin de modifier le dossier "{{ DS_USER_instance_name }}"
   file: 
     path: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}"
     state: directory 
@@ -31,7 +31,7 @@
     recurse: yes
 
 # Ignore errors as the installer may start DJ
-- name: Enable opendj - ignore errors as it may already be running
+- name: Démarrer l'instance OpenDS, ignore l'erreur ci déjà allumé.
   service: 
     name: "{{ DS_USER_service_name }}"
     enabled: yes

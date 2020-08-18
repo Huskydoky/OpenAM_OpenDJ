@@ -20,13 +20,13 @@
     dest: /opt/
     remote_src: yes
 
-- name: Céation d'un lien symbolique
+- name: Céation d'un lien symbolique vers /opt/tomcat/
   file:
     src: /opt/apache-tomcat-9.0.36/
     dest: /opt/tomcat
     state: link
 
-- name: création de l'utilisateur Tomcat
+- name: création de l'utilisateur "{{ tomcat_user }}"
   user:
     name: "{{ tomcat_user }}"
     shell: /bin/false
@@ -53,20 +53,20 @@
 #    src: server.xml 
 #    dest: {{tomcat_conf}}
 
-- name: Configure Tomcat users
+- name: Configurer un user Tomcat
   template: 
     src: tomcat-users.xml 
     dest: "{{ tomcat_conf }}"
     
 
-- name: Change ownership of Tomcat installation
+- name: Donner à l'utilisateur "{{ tomcat_user }}" les droits sur le dossier "{{ tomcat_parent }}"
   file: 
     path: "{{ tomcat_parent }}" 
     owner: "{{ tomcat_user }}" 
     state: directory 
     recurse: yes
 
-- name: Enable and start Tomcat
+- name: Activer et démarrer le service Tomcat
   service: 
     name: "tomcat.service" 
     state: restarted 
