@@ -12,7 +12,7 @@
     mode: 644
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user }}"
-    recurse: yes
+    remote_src: yes
 
 - name: Création du dossier qui contiendra les openam-tools
   file:
@@ -26,7 +26,7 @@
   unarchive:
     src: "/root/openam/AM-SSOConfiguratorTools-5.1.1.5.zip"
     dest: "/opt/openam-tools/config"
-    recurse: yes
+    remote_src: yes
  
 - name: Copie du fichier config.file qui servira a configure l'AM
   template: 
