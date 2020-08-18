@@ -2,6 +2,7 @@
 openam_hostname: "{{ ansible_host }}"
 openam_fqdn: "{{ ansible_host }}.aduneo.test"
 opendj_zip: DS-6.0.0.zip
+AM_zip: AM-6.0.0.7.zip
 
 ######## Variable Installation Tomcat #########
 #tomcat_instance: tomcat1
@@ -21,8 +22,12 @@ admin_password: admin
 
 ######## Variable AM ########
 openam_admin: openam
+openam_admin_root: "uid={{ openam_admin }},ou=admins,{{ DS_CONF_basedn }}"
 openam_admin_password: password
 
+domain: aduneo.test
+Base_dir: /opt/tomcat/openam
+Deployement_dir: /openam
 
 ######## Variable Directory Service BACKEND ########
 fr_user: root

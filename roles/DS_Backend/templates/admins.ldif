@@ -17,7 +17,7 @@ objectclass: top
 objectclass: organizationalUnit
 ou: admins
 
-dn: uid={{openam_admin}},ou=admins,{{ DS_CONF_basedn }}
+dn: uid={{ openam_admin }},ou=admins,{{ DS_CONF_basedn }}
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson

@@ -1,0 +1,6 @@
+---
+- hosts: AM
+  roles:
+   - { role: AM }
+  vars_files:
+   - vars/main.yml

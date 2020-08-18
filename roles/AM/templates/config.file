@@ -1,0 +1,29 @@
+# Server Properties
+SERVER_URL=http://{{ ansible_host }}.{{ domain }}:{{ tomcat_http_port }}
+DEPLOYMENT_URI={{ Deployement_dir }}
+BASE_DIR={{ Base_dir }}
+locale=en_US
+PLATFORM_LOCALE=en_US
+AM_ENC_KEY=
+ADMIN_PWD={{ openam_admin_password }}
+COOKIE_DOMAIN={{ domain }}
+ACCEPT_LICENSES=true
+
+# Config store on openDS
+DATA_STORE=dirServer
+DIRECTORY_SSL=SIMPLE
+DIRECTORY_SERVER={{ DS_backend1 }}.aduneo.test
+DIRECTORY_PORT={{ DS_CONF_PORT_LDAP }}
+DIRECTORY_ADMIN_PORT={{ DS_CONF_PORT_ADMIN }}
+ROOT_SUFFIX={{ DS_CONF_basedn }}
+DS_DIRMGRDN={{ openam_admin_root }}
+DS_DIRMGRPASSWD={{ openam_admin_password }}
+
+# External OpenDJ based user data store
+USERSTORE_TYPE=LDAPv3ForOpenDS
+USERSTORE_SSL=SIMPLE
+USERSTORE_HOST={{ DS_user1 }}.aduneo.test
+USERSTORE_PORT={{ DS_USER_PORT_LDAP }}
+USERSTORE_SUFFIX={{ DS_USER_basedn }}
+USERSTORE_MGRDN={{ openam_admin_root }}
+USERSTORE_PASSWD={{ openam_admin_password }}

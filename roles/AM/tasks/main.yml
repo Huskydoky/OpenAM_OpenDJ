@@ -1,0 +1,38 @@
+---
+
+- name: Extraire les AM-6.0.0.7.zip 
+  unarchive: 
+    src: "/root/aduneo/{{ AM_zip }}" 
+    dest: "/root"
+    
+- name: Mise en place du Access management
+  copy: 
+    src: "/root/openam/AM-6.0.0.7.war"
+    dest: "{{ tomcat_parent }}/webapps"
+    mode: 644
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user }}"
+
+- name: Création du dossier qui contiendra les openam-tools
+  file:
+    path: "/opt/openam-tools/config"
+    state: directory
+    recurse: yes
+    mode: 0755
+
+    
+- name: Extraire les tools config dans le dossier précédemment créer
+  unarchive:
+    src: "/root/openam/AM-SSOConfiguratorTools-5.1.1.5.zip"
+    dest: "/opt/openam-tools/config"
+    recurse: yes
+ 
+- name: Copie du fichier config.file qui servira a configure l'AM
+  template: 
+    src: "config.file"
+    dest: "/tmp/config.file"
+
+- name: Configuration AM
+  command: "java -jar /opt/openam-tools/config/openam-configurator-tool-14.1.1.5.jar -f /tmp/config.file --acceptLicense"
+
+ 
