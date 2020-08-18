@@ -5,10 +5,10 @@
     src: "/root/aduneo/{{ AM_zip }}" 
     dest: "/root"
     
-- name: Mise en place du Access management
+- name: Copy du .war dans "{{ tomcat_parent }}"/webapps/
   copy: 
     src: "/root/openam/AM-6.0.0.7.war"
-    dest: "{{ tomcat_parent }}/webapps"
+    dest: "{{ tomcat_parent }}/webapps/openam.war"
     mode: 644
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user }}"
