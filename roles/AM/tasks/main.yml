@@ -9,7 +9,7 @@
   copy: 
     src: "/root/openam/AM-6.0.0.7.war"
     dest: "{{ tomcat_parent }}/webapps/openam.war"
-    mode: 644
+    mode: 0644
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user }}"
     remote_src: yes
