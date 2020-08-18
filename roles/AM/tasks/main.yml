@@ -14,13 +14,17 @@
     group: "{{ tomcat_user }}"
     remote_src: yes
 
+- name: Attente du deployement du .war
+  wait_for:
+    timeout: 10
+    msg: Deployement du .war
+
 - name: Création du dossier qui contiendra les openam-tools
   file:
     path: "/opt/openam-tools/config"
     state: directory
     recurse: yes
     mode: 0755
-
     
 - name: Extraire les tools config dans le dossier précédemment créer
   unarchive:
