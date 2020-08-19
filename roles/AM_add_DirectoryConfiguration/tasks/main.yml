@@ -1,6 +1,6 @@
 ---
 
-- name: Recupération de la configuration XML AM
+- name: Export de la configuration XML AM
   command: "/opt/openam-tools/admin/openam/bin/ssoadm get-svrcfg-xml -s http://{{ openam_fqdn }}:{{ tomcat_http_port }}{{ Deployement_dir }} -u amadmin -f /root/aduneo/Yousouldnotpass -o /root/aduneo/Serveur_config.xml"
     
 - name: Ajout d'un Directoy Configuration
@@ -8,4 +8,9 @@
     path: "/root/aduneo/Serveur_config.xml"
     block: "<Server name=\"server2\" host=\"stanford.aduneo.test\" port=\"389\" type=\"SIMPLE\" />"
     insertafter: "<Server name*"
+
+- name: Importer la configuration XML AM
+  command: "/opt/openam-tools/admin/openam/bin/ssoadm get-svrcfg-xml -s http://{{ openam_fqdn }}:{{ tomcat_http_port }}{{ Deployement_dir }} -u amadmin -f /root/aduneo/Yousouldnotpass -o /root/aduneo/Serveur_config.xml"
+        
+
     
