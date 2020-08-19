@@ -1,15 +1,15 @@
 - name: Répliquer 2 instances Backend
-  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsreplication configure --host1 {{ Host1_Backend }} --port1 {{ Admin_port1_Backend }} --bindDN1 {{ DS_rootUserDN1_Backend }} --bindPassword1 {{ DS_password1_Backend }} --replicationPort1 {{ DS_PORT_REP1 }} --host2 {{ Host2_Backend }} --port2 {{ Admin_port2_Backend }} --bindDN2 {{ DS_rootUserDN2_Backend }} --bindPassword2 {{ DS_password1_Backend }} --replicationPort2 {{ DS_PORT_REP1 }} --adminUID {{ REPLADM }} --adminPassword {{ REPLPASS }} --baseDN {{ BaseDN_REP_Backend }} --trustAll --no-prompt
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsreplication configure --host1 {{ Host1_Backend }} --port1 {{ Admin_port1_Backend }} --bindDN1 {{ DS_rootUserDN1_Backend }} --bindPassword1 {{ DS_password1_Backend }} --replicationPort1 {{ DS_PORT_REP1 }} --host2 {{ Host2_Backend }} --port2 {{ Admin_port2_Backend }} --bindDN2 {{ DS_rootUserDN2_Backend }} --bindPassword2 {{ DS_password1_Backend }} --replicationPort2 {{ DS_PORT_REP1 }} --adminUID {{ REPLADM }} --adminPassword {{ REPLPASS }} --baseDN {{ BaseDN_REP_Backend }} --trustAll --no-prompt"
   host: [opendjBackend]
       
 - name: Activer la Réplication
-  command: ""{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_Backend }} --hostname {{ Host1_Backend }} --port {{ Admin_port1_Backend }} --trustAll --no-prompt
+  command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_Backend }} --hostname {{ Host1_Backend }} --port {{ Admin_port1_Backend }} --trustAll --no-prompt"
 
 
 - name: Répliquer 2 instances:
-  command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/dsreplication configure --host1 {{ Host1_User }} --port1 {{ Admin_port1_User }} --bindDN1 {{ DS_rootUserDN1_User }} --bindPassword1 {{ DS_password1_User }} --replicationPort1 {{ DS_PORT_REP1 }} --host2 {{ Host2_User }} --port2 {{ Admin_port2_User }} --bindDN2 {{ DS_rootUserDN2_User }} --bindPassword2 {{ DS_password1_User }} --replicationPort2 {{ DS_PORT_REP1 }} --adminUID {{ REPLADM }} --adminPassword {{ REPLPASS }} --baseDN {{ BaseDN_REP_User }} --trustAll --no-prompt
+  command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/dsreplication configure --host1 {{ Host1_User }} --port1 {{ Admin_port1_User }} --bindDN1 {{ DS_rootUserDN1_User }} --bindPassword1 {{ DS_password1_User }} --replicationPort1 {{ DS_PORT_REP1 }} --host2 {{ Host2_User }} --port2 {{ Admin_port2_User }} --bindDN2 {{ DS_rootUserDN2_User }} --bindPassword2 {{ DS_password1_User }} --replicationPort2 {{ DS_PORT_REP1 }} --adminUID {{ REPLADM }} --adminPassword {{ REPLPASS }} --baseDN {{ BaseDN_REP_User }} --trustAll --no-prompt"
   host: [opendfuser]
     
 - name: Activer la Réplication
-  command: ""{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_User }} --hostname {{ Host1_User }} --port {{ Admin_port1_User }} --trustAll --no-prompt
+  command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_User }} --hostname {{ Host1_User }} --port {{ Admin_port1_User }} --trustAll --no-prompt"
   host: [opendfuser]
