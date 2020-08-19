@@ -1,0 +1,6 @@
+---
+- hosts: AM
+  roles:
+   - { role: AM_add_DirectoryConfiguration }
+  vars_files:
+   - vars/main.yml
