@@ -1,0 +1,17 @@
+
+- name: Récupération du fichier contenant le mdp amadmin
+  template:
+    src: Youshouldnotpass
+    dst: /tmp
+    mode: 0400
+
+- name: Import du fichier de conf du datastore à intégrer
+  template:
+    src: datastore.conf
+    dst: /tmp
+    mode: 0644
+
+- name: Création d'un nouvelle database
+  command: "/opt/openam-tools/admin/openam/bin/ssoadm create-datastore -e / -u amadmin -f /tmp/Yousouldnotpass -m {{ host2_User }} -t LDAPv3ForOpenDS -D /tmp/datastore.conf"
+  
+  

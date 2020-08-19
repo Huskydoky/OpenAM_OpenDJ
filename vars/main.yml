@@ -1,6 +1,7 @@
 ######## Variable préparaton ########
 openam_hostname: "{{ ansible_host }}"
-openam_fqdn: "{{ ansible_host }}.aduneo.test"
+domain: aduneo.test
+openam_fqdn: "{{ ansible_host }}.{{ domain }}"
 opendj_zip: DS-6.0.0.zip
 AM_zip: AM-6.0.0.7.zip
 
@@ -25,7 +26,7 @@ openam_admin: openam
 openam_admin_root: "uid={{ openam_admin }},ou=admins,{{ DS_CONF_basedn }}"
 openam_admin_password: password
 
-domain: aduneo.test
+
 Base_dir: /opt/tomcat/openam
 Deployement_dir: /openam
 
@@ -93,6 +94,7 @@ DS_password2_Backend: "{{ DS_CONF_password }}"
 
 
 
+
 ### Users ###
 Host1_User: "{{ ansible_host }}"
 Host2_User: "{{ ansible_host }}"
@@ -103,5 +105,3 @@ DS_rootUserDN1_User: "{{ DS_USER_rootUserDN }}"
 DS_rootUserDN2_User: "{{ DS_USER_rootUserDN }}"
 DS_password1_User: "{{ DS_USER_password }}"
 DS_password2_User: "{{ DS_USER_password }}"
-
-######## Variable installation Tools #########
