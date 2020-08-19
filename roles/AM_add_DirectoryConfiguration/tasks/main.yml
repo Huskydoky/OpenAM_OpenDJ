@@ -1,4 +1,5 @@
 ---
+
 - name: Recupération de la configuration XML AM
   command: "/opt/openam-tools/admin/openam/bin/ssoadm get-svrcfg-xml -s http://{{ openam_fqdn }}:{{ tomcat_http_port }}{{ Deployement_dir }}-u amadmin -f /root/aduneo/Yousouldnotpass -o /root/aduneo/Serveur_config.xml"
     
