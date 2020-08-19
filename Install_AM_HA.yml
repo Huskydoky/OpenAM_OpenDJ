@@ -1,0 +1,36 @@
+---
+- hosts: all
+  roles:
+   - { role: install-base-centos }
+  vars_files:
+   - vars/main.yml
+  
+- hosts: AM
+  roles:
+   - { role: Tomcat }
+  vars_files:
+   - vars/main.yml
+   
+- hosts: opendjBackend
+  roles:
+   - { role: DS_Backend }
+   - { role: DS_Backend DS_CONF_instance_name: backend2, DS_CONF_PORT_ADMIN: 4445, DS_CONF_PORT_ADMIN: 390, DS_CONF_PORT_LDAPS: 637, DS_CONF_PORT_JMX: 1690, DS_CONF_PORT_HTTP: 8282, DS_CONF_PORT_HTTPS: 8446 }
+   - { role: Replication Admin_port2_Backend: 4445, DS_PORT_REP2: 8990 }
+  vars_files:
+   - vars/main.yml
+
+- hosts: opendfuser
+  roles:
+   - { role: DS }
+   - { role: DS DS_CONF_instance_name: backend2, DS_USER_PORT_ADMIN: 4445, DS_USER_PORT_ADMIN: 390, DS_USER_PORT_LDAPS: 637, DS_USER_PORT_JMX: 1690, DS_USER_PORT_HTTP: 8282, DS_USER_PORT_HTTPS: 8446 }
+   - { role: Replication Admin_port2_User: 4445, DS_PORT_REP2: 8990 }
+  vars_files:
+   - vars/main.yml
+
+- hosts: AM
+  roles:
+   - { role: AM }
+  vars_files:
+   - vars/main.yml
+
+   

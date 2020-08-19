@@ -19,13 +19,13 @@
     timeout: 30
     msg: Deployement du .war
 
-- name: Création du dossier qui contiendra les openam-tools
+- name: Création du dossier qui contiendra les openam-tools Config
   file:
     path: "/opt/openam-tools/config"
     state: directory
     recurse: yes
     mode: 0755
-    
+
 - name: Extraire les tools config dans le dossier précédemment créé
   unarchive:
     src: "/root/openam/AM-SSOConfiguratorTools-5.1.1.5.zip"
@@ -40,4 +40,17 @@
 - name: Configuration de l'AM
   command: "java -jar /opt/openam-tools/config/openam-configurator-tool-14.1.1.5.jar -f /tmp/config.file --acceptLicense"
 
- 
+- name: Création du dossier qui contiendra les openam-tools Admin
+  file:
+    path: "/opt/openam-tools/admin"
+    state: directory
+    recurse: yes
+    mode: 0755
+
+- name: Extraire les tools Admin dans le dossier précédemment créé
+  unarchive:
+    src: "/root/openam/AM-SSOAdminTools-5.1.1.5.zip"
+    dest: "/opt/openam-tools/admin"
+    remote_src: yes   
+
+  

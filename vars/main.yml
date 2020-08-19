@@ -71,5 +71,37 @@ DS_USER_rootUserDN: "cn=Directory Manager"
 DS_USER_password: password
 
 
+######## Variable Réplication #########
+
+DS_PORT_REP1: 8989
+DS_PORT_REP2: 8989
+REPLADM: adminrep
+REPLPASS: password
+
+
+
+### Backend ###
+Host1_Backend: {{ ansible_host }}
+Host2_Backend: {{ ansible_host }}
+Admin_port1_Backend: {{ DS_CONF_PORT_ADMIN }}
+Admin_port2_Backend: {{ DS_CONF_PORT_ADMIN }}
+BaseDN_REP_Backend: {{ DS_CONF_basedn }}
+DS_rootUserDN1_Backend: {{ DS_CONF_rootUserDN }}
+DS_rootUserDN2_Backend: {{ DS_CONF_rootUserDN }}
+DS_password1_Backend: {{ DS_CONF_password }}
+DS_password2_Backend: {{ DS_CONF_password }}
+
+
+
+### Users ###
+Host1_User: {{ ansible_host }}
+Host2_User: {{ ansible_host }}
+Admin_port1_User: {{ DS_USER_PORT_ADMIN }}
+Admin_port2_User: {{ DS_USER_PORT_ADMIN }}
+BaseDN_REP_User: {{ DS_USER_basedn }}
+DS_rootUserDN1_User: {{ DS_USER_rootUserDN }}
+DS_rootUserDN2_User: {{ DS_USER_rootUserDN }}
+DS_password1_User: {{ DS_USER_password }}
+DS_password2_User: {{ DS_USER_password }}
 
 ######## Variable installation Tools #########

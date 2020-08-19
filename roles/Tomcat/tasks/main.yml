@@ -39,6 +39,16 @@
     dest: /etc/systemd/system/tomcat.service
     mode: 766
 
+- name: Copie du script tomcat.sh permettant de définir le JAVA_HOME
+  template: 
+    src: tomcat.sh
+    dest: /etc/systemd/system/tomcat.service
+    mode: 644
+
+- name: Change the working directory to somedir/ before executing the command.
+  shell: tomcat.sh
+  args:
+    chdir: /etc/profile.d/
 
 #- name: Copy the tomcat defaults to {{tomcat_conf}}
 # command: cp "/etc/tomcat/{{item}}" "{{tomcat_conf}}"
