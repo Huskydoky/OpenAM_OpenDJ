@@ -7,4 +7,10 @@
   lineinfile:
     path: "/root/aduneo/Serveur_config.xml"
     line: "<Server name=\"server2\" host=\"stanford.aduneo.test\" port=\"389\" type=\"SIMPLE\" />"
-    insertafter: "<Server name*"
+    insertafter: "<Server name=\"Server1\"*"
+    
+- name: Ajout d'un Directoy Configuration
+  lineinfile:
+    path: "/root/aduneo/Serveur_config.xml"
+    line: "<Server name=\"server2\" host=\"stanford.aduneo.test\" port=\"389\" type=\"SIMPLE\" />"
+    insertafter: "<Server name=\"Server1\"*"
