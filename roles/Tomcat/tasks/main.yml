@@ -43,7 +43,7 @@
 - name: Copie du script tomcat.sh permettant de définir le JAVA_HOME
   template: 
     src: tomcat.sh
-    dest: /etc/systemd/system/tomcat.service
+    dest: /etc/profile.d/
     mode: 644
 
 - name: Change the working directory to somedir/ before executing the command.
