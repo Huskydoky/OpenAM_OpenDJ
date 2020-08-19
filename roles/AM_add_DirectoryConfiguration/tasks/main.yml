@@ -1,16 +1,19 @@
 ---
 
+- name: Récupération du fichier contenant le mdp amadmin
+  template:
+    src: Youshouldnotpass
+    dst: /tmp
+    mode: 0400
+
 - name: Export de la configuration XML AM
-  command: "/opt/openam-tools/admin/openam/bin/ssoadm get-svrcfg-xml -s http://{{ openam_fqdn }}:{{ tomcat_http_port }}{{ Deployement_dir }} -u amadmin -f /root/aduneo/Yousouldnotpass -o /root/aduneo/Serveur_config.xml"
+  command: "/opt/openam-tools/admin/openam/bin/ssoadm get-svrcfg-xml -s http://{{ openam_fqdn }}:{{ tomcat_http_port }}{{ Deployement_dir }} -u amadmin -f /tmp/Yousouldnotpass -o /tmp/Serveur_config.xml"
     
 - name: Ajout d'un Directoy Configuration
   blockinfile:
     path: "/root/aduneo/Serveur_config.xml"
-    block: "<Server name=\"server2\" host=\"stanford.aduneo.test\" port=\"389\" type=\"SIMPLE\" />"
+    block: "<Server name=\"{{ Host2_Backend }}\" host=\"{{ Host2_Backend }}.{{ domain }}\" port=\"{{ DS_CONF_PORT_LDAP }}\" type=\"SIMPLE\" />"
     insertafter: "<Server name*"
 
 - name: Importer la configuration XML AM
-  command: "/opt/openam-tools/admin/openam/bin/ssoadm get-svrcfg-xml -s http://{{ openam_fqdn }}:{{ tomcat_http_port }}{{ Deployement_dir }} -u amadmin -f /root/aduneo/Yousouldnotpass -o /root/aduneo/Serveur_config.xml"
-        
-
-    
+  command: "/opt/openam-tools/admin/openam/bin/ssoadm set-svrcfg-xml -s http://{{ openam_fqdn }}:{{ tomcat_http_port }}{{ Deployement_dir }} -u amadmin -f /tmp/Yousouldnotpass -X /tmp/Serveur_config.xml"
