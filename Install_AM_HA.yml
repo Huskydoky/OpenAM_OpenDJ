@@ -11,7 +11,8 @@
    - Tomcat
   vars_files:
    - vars/main.yml
-   
+---
+
 - hosts: opendjBackend
   roles:
    - DS_Backend

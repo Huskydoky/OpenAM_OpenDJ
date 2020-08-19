@@ -1,3 +1,4 @@
+---
 
 - name: Récupération du fichier contenant le mdp amadmin
   template:
