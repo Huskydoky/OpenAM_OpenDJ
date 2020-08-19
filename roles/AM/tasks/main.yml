@@ -16,7 +16,7 @@
 
 - name: Attente du deployement du .war
   wait_for:
-    timeout: 60
+    timeout: 6
     msg: Deployement du .war
 
 - name: Création du dossier qui contiendra les openam-tools Config
@@ -51,6 +51,9 @@
   unarchive:
     src: "/root/openam/AM-SSOAdminTools-5.1.1.5.zip"
     dest: "/opt/openam-tools/admin"
-    remote_src: yes   
+    remote_src: yes
+
+- name: Installation des tools Admin
+  command: "./setup --acceptLicense -p  /opt/tomcat/openam/ -l /opt/openam-tools/admin/log -d /opt/openam-tools/admin/debug"
 
   
