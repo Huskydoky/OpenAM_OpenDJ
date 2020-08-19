@@ -35,7 +35,7 @@
   roles:
    - DS
    - role: DS 
-     vars: 7
+     vars:
         DS_CONF_instance_name: backend2
         DS_USER_PORT_ADMIN: 4445
         DS_USER_PORT_LDAP: 390
