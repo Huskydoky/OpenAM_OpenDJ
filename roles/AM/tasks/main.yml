@@ -54,6 +54,6 @@
     remote_src: yes
 
 - name: Installation des tools Admin
-  command: "./setup --acceptLicense -p  /opt/tomcat/openam/ -l /opt/openam-tools/admin/log -d /opt/openam-tools/admin/debug"
+  command: "/opt/openam-tools/admin/setup --acceptLicense -p  /opt/tomcat/openam/ -l /opt/openam-tools/admin/log -d /opt/openam-tools/admin/debug"
 
   
