@@ -36,7 +36,7 @@
    - DS
    - role: DS 
      vars:
-        DS_CONF_instance_name: backend2
+        DS_CONF_instance_name: opendj2
         DS_USER_PORT_ADMIN: 4445
         DS_USER_PORT_LDAP: 390
         DS_USER_PORT_LDAPS: 637

@@ -9,7 +9,7 @@
     src: "/root/aduneo/{{ opendj_zip }}" 
     dest: "{{ DS_CONF_install_root }}"
 
-- name: Renommer le dossier opendj vers "{{ DS_USER_instance_name }}"
+- name: Renommer le dossier opendj vers "{{ DS_CONF_instance_name }}"
   command: "mv {{ DS_CONF_install_root }}/opendj {{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}"
 
 #- name: copy opendj props file
@@ -23,7 +23,7 @@
 - name: Création du rc script
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/create-rc-script -f /etc/init.d/{{ DS_CONF_service_name }} -u root"
   
-- name: Donnée les droit à "{{ fr_user }}" afin de modifier le dossier "{{ DS_USER_instance_name }}"
+- name: Donnée les droit à "{{ fr_user }}" afin de modifier le dossier "{{ DS_CONF_instance_name }}"
   file: 
     path: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}"
     state: directory 
