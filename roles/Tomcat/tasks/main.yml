@@ -47,7 +47,7 @@
     mode: 766
 
 - name: Change the working directory to somedir/ before executing the command.
-  command: ". /etc/profile.d/tomcat.sh"
+  command: "sh /etc/profile.d/tomcat.sh"
 
 
 #- name: Copy the tomcat defaults to {{tomcat_conf}}
