@@ -12,7 +12,7 @@
        DS_CONF_PORT_HTTP: 8282,
        DS_CONF_PORT_HTTPS: 8446 }
    - { role: Replication,
-       Admin_port2_Backend: 4445
+       Admin_port2_Backend: 4445,
        DS_PORT_REP2: 8990 }
   vars_files:
    - vars/main.yml
