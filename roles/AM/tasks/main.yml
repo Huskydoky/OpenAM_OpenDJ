@@ -16,7 +16,7 @@
 
 - name: Attente du deployement du .war
   wait_for:
-    timeout: 6
+    timeout: 60
     msg: Deployement du .war
 
 - name: Création du dossier qui contiendra les openam-tools Config
