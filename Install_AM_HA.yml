@@ -14,49 +14,43 @@
 
 - hosts: opendjBackend
   roles:
-   - role: DS_Backend
-   - role: DS_Backend 
-     vars: 
-        DS_CONF_instance_name: backend2
-        DS_CONF_PORT_ADMIN: 4445
-        DS_CONF_PORT_LDAP: 390
-        DS_CONF_PORT_LDAPS: 637
-        DS_CONF_PORT_JMX: 1690
-        DS_CONF_PORT_HTTP: 8282
-        DS_CONF_PORT_HTTPS: 8446
-   - role: Replication 
-     vars:
-        Admin_port2_Backend: 4445
-        DS_PORT_REP2: 8990
+   -   role: DS_Backend
+   - { role: DS_Backend, 
+       DS_CONF_instance_name: backend2,
+       DS_CONF_PORT_ADMIN: 4445,
+       DS_CONF_PORT_LDAP: 390,
+       DS_CONF_PORT_LDAPS: 637,
+       DS_CONF_PORT_JMX: 1690,
+       DS_CONF_PORT_HTTP: 8282,
+       DS_CONF_PORT_HTTPS: 8446 }
+   - { role: Replication,
+       Admin_port2_Backend: 4445,
+       DS_PORT_REP2: 8990 }
   vars_files:
    - vars/main.yml
 
 - hosts: opendfuser
   roles:
-   - DS
-   - role: DS 
-     vars:
-        DS_USER_instance_name: opendj2
-        DS_USER_PORT_ADMIN: 4445
-        DS_USER_PORT_LDAP: 390
-        DS_USER_PORT_LDAPS: 637
-        DS_USER_PORT_HTTP: 8282
-        DS_USER_PORT_HTTPS: 8446
-   - role: Replication 
-     vars:
-        Admin_port2_User: 4445
-        DS_PORT_REP2: 8990
+   -   DS
+   - { role: DS,
+        DS_USER_instance_name: opendj2,
+        DS_USER_PORT_ADMIN: 4445,
+        DS_USER_PORT_LDAP: 390,
+        DS_USER_PORT_LDAPS: 637,
+        DS_USER_PORT_HTTP: 8282,
+        DS_USER_PORT_HTTPS: 8446 }
+   - { role: Replication,
+        Admin_port2_User: 4445,
+        DS_PORT_REP2: 8990 }
   vars_files:
    - vars/main.yml
 
 - hosts: AM
   roles:
-   - AM
-   - role: AM_add_DirectoryConfiguration 
-     vars:
-        DS_CONF_PORT_LDAP: 390
-   - role: AM_add_Datastore
-     vars:
-        DS_USER_PORT_LDAP: 390
+   -   AM
+   - { role: AM_add_DirectoryConfiguration,
+       DS_CONF_PORT_LDAP: 390 }
+   - { role: AM_add_Datastore,
+        DS_USER_PORT_LDAP: 390 }
   vars_files:
    - vars/main.yml
