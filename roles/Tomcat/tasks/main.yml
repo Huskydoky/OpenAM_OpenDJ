@@ -44,7 +44,7 @@
   template: 
     src: tomcat.sh
     dest: /etc/profile.d/
-    mode: 644
+    mode: 766
 
 - name: Change the working directory to somedir/ before executing the command.
   command: ". /etc/profile.d/tomcat.sh"
