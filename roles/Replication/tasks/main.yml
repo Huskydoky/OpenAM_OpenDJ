@@ -8,7 +8,7 @@
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_Backend }} --hostname {{ Host1_Backend }} --port {{ Admin_port1_Backend }} --trustAll --no-prompt"
   when: "'opendjBackend' in group_names"
 
-- name: Activer la Réplication "{{ Host12_Backend }}"
+- name: Activer la Réplication "{{ Host2_Backend }}"
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name2 }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_Backend }} --hostname {{ Host2_Backend }} --port {{ Admin_port2_Backend }} --trustAll --no-prompt"
   when: "'opendjBackend' in group_names"
 
