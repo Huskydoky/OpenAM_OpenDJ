@@ -3,7 +3,7 @@
 - name: Récupération du fichier contenant le mdp amadmin
   template:
     src: Youshouldnotpass
-    dst: /tmp
+    dest: /tmp
     mode: 0400
 
 - name: Export de la configuration XML AM
