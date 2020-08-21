@@ -3,13 +3,13 @@
 - name: Récupération du fichier contenant le mdp amadmin
   template:
     src: Youshouldnotpass
-    dst: /tmp/Youshouldnotpass
+    dest: /tmp/Youshouldnotpass
     mode: 0400
 
 - name: Import du fichier de conf du datastore à intégrer
   template:
     src: datastore.conf
-    dst: /tmp/datastore.conf
+    dest: /tmp/datastore.conf
     mode: 0644
 
 - name: Création d'un nouvelle database
