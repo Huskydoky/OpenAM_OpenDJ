@@ -22,6 +22,6 @@
   command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_User }} --hostname {{ Host1_User }} --port {{ Admin_port1_User }} --trustAll --no-prompt"
   when: "'opendfuser' in group_names"
   
-  - name: Activer la Réplication sur "{{ Host2_User }}"
+- name: Activer la Réplication sur "{{ Host2_User }}"
   command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name2 }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_User }} --hostname {{ Host2_User }} --port {{ Admin_port2_User }} --trustAll --no-prompt"
   when: "'opendfuser' in group_names"
