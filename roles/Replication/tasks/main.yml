@@ -4,11 +4,11 @@
   when: "'opendjBackend' in group_names"
   ignore_error: yes
   
-- name: Activer la Réplication
+- name: Activer la Réplication sur "{{ Host1_Backend }}"
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_Backend }} --hostname {{ Host1_Backend }} --port {{ Admin_port1_Backend }} --trustAll --no-prompt"
   when: "'opendjBackend' in group_names"
 
-- name: Activer la Réplication
+- name: Activer la Réplication "{{ Host12_Backend }}"
   command: "{{ DS_CONF_install_root }}/{{ DS_CONF_instance_name2 }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_Backend }} --hostname {{ Host2_Backend }} --port {{ Admin_port2_Backend }} --trustAll --no-prompt"
   when: "'opendjBackend' in group_names"
 
@@ -18,10 +18,10 @@
   when: "'opendfuser' in group_names"
   ignore_error: yes
     
-- name: Activer la Réplication
+- name: Activer la Réplication sur "{{ Host1_User }}"
   command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_User }} --hostname {{ Host1_User }} --port {{ Admin_port1_User }} --trustAll --no-prompt"
   when: "'opendfuser' in group_names"
   
-  - name: Activer la Réplication
+  - name: Activer la Réplication sur "{{ Host2_User }}"
   command: "{{ DS_USER_install_root }}/{{ DS_USER_instance_name2 }}/bin/dsreplication initialize-all --adminUID {{ REPLADM }} --adminPassword {{REPLPASS }} --baseDN {{ BaseDN_REP_User }} --hostname {{ Host2_User }} --port {{ Admin_port2_User }} --trustAll --no-prompt"
   when: "'opendfuser' in group_names"
