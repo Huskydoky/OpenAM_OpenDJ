@@ -1,6 +1,10 @@
 ---
 - hosts: AM
   roles:
-   - { role: AM }
+   -   AM
+   - { role: AM_add_DirectoryConfiguration,
+       DS_CONF_PORT_LDAP: 390 }
+   - { role: AM_add_Datastore,
+        DS_USER_PORT_LDAP: 390 }
   vars_files:
    - vars/main.yml
